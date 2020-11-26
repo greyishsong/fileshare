@@ -18,7 +18,7 @@ function listFile(type) {
             if (type == "all" || (type != "all" && file.type == type)) {
                 board.innerHTML = `${board.innerHTML}
                     <a class=\"file\" href=\"https://share.greyishsong.ink/download/${file.filename}\" download=\"${file.filename}\">
-                    <img class=\"file\" src=\"/static/${file.type}.png\" alt=\"${file.type}\">
+                    <img class=\"file\" src=\"/static/icon/${file.type}.png\" alt=\"${file.type}\">
                     <p>${file.filename}</p>
                     </a>`;
             }
