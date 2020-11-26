@@ -1,0 +1,143 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.frame {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: auto;
+    min-height: 514px;
+}
+
+.sidebar {
+    background-color: royalblue;
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: auto;
+    min-width: 150px;
+}
+
+.spacer {
+    height: 16%;
+}
+
+.filter {
+    background-color: royalblue;
+    border: none;
+    outline: none;
+    padding: 5px 20px;
+    text-align: left;
+    font-size: 12px;
+    color: white;
+}
+
+.main {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 0px;
+}
+
+.board {
+    background-color: rgb(255, 255, 251);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1 0 auto;
+}
+
+a.file {
+    margin: 10px;
+    font-size: 10px;
+    text-align: center;
+    width: 90px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+a.file:link {
+    text-decoration: none;
+}
+
+a.file:visited {
+    color: black;
+}
+
+a.file:hover {
+    background-color: lightyellow;
+}
+
+img.file {
+    width: 80px;
+    height: 80px;
+}
+
+.upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+a.upload-wrap {
+    position: relative;
+    margin-bottom: 15px;
+    background-color: royalblue;
+    border-radius: 15px;
+    width: 200px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 12px;
+    color: white;
+    text-decoration: none;
+    overflow: hidden;
+    display: inline-block;
+}
+
+a.upload-wrap:hover {
+    background-color: rgb(47, 47, 189);
+    cursor: pointer;
+}
+
+p.upload {
+    margin: 0 0 5px 0;
+    color: gray;
+}
+
+input[type=file].upload {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 15px;
+    width: 200px;
+    height: 30px;
+    outline: none;
+    font-size: 100px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+button.upload {
+    width: 200px;
+    background-color: royalblue;
+    font-size: 12px;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 15px;
+    height: 30px;
+    cursor: pointer;
+}
+
+button.upload:hover {
+    background-color: rgb(47, 47, 189);
+}
