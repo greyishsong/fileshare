@@ -2,9 +2,6 @@ var selected = -1;
 var buttons = document.getElementsByClassName("filter");
 
 window.onload = function() {
-    var win = document.getElementsByTagName("body")[0];
-    win.style.width = window.screen.availWidth;
-    win.style.height = window.screen.availHeight;
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].onclick = function () {
             for (let i = 0; i < buttons.length; i++) {
