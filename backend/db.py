@@ -3,6 +3,8 @@ import sqlite3
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
+from hashlib import sha256
+from base64 import b64encode
 
 
 # basic database operations
@@ -36,6 +38,17 @@ def init_db():
 
     with current_app.open_resource('schema.sql') as schema:
         db.executescript(schema.read().decode('utf8'))
+
+    flist = os.listdir(current_app.config['KEY_FOLDER']);
+    for fname in flist:
+        with open(os.path.join(current_app.config['KEY_FOLDER'], fname)) as f:
+            content = f.read()
+            tmp = sha256(content.encode('utf-8')).digest()
+            value = b64encode(tmp).decode('ascii')
+            db.execute(
+                    'INSERT INTO users (keyfile, macaddr) VALUES (?, ?)', (value, None)
+                    )
+    db.commit()
 
     # create a new log file
     #log_file = open(current_app.config['LOG_FILE'], 'w')
