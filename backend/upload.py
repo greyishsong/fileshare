@@ -51,7 +51,7 @@ def upload():
             if db.execute('SELECT id FROM files WHERE filename = ?', (filename,)).fetchone() is None:
                 current_type = get_type(filename)
                 db.execute(
-                        'INSERT INTO files (uploaded, userid, filename, filetype) VALUES (?, ?, ?)',
+                        'INSERT INTO files (uploaded, userid, filename, filetype) VALUES (?, ?, ?, ?)',
                         (current_time, checkinfo['id'], filename, current_type))
             else:
                 db.execute(
