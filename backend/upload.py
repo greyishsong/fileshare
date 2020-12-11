@@ -18,7 +18,6 @@ bp = Blueprint('upload', __name__)
 @bp.route('/upload', methods=('GET', 'POST'))
 def upload():
     if request.method == 'POST':
-        print("receive POST request")
         db = get_db()
         keyfile = request.form['keyfile']
         macaddr = request.form['macaddr']
