@@ -27,27 +27,28 @@ def close_db(e = None):
 
 # initialize a database
 def init_db():
-    # backup the old database file
-    # by renaming it to format 'fileshare-yy-mm-dd.db'
-    #if 'fileshare.db' in os.listdir(current_app.instance_path):
-    #    instpath = current_app.instance_path
-    #    cur_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    #    os.rename(os.path.join(instpath, 'fileshare.db'), os.path.join(instpath, 'fileshare'+cur_date+'.db'))
+    # delete all files uploaded
+    # the only folder is the KEY_FOLDER and it should be remained
+    flist = os.listdir(current_app.config['UPLOAD_FOLDER'])
+    for fname in flist:
+        if not os.path.isdir(os.path.join(current_app.config['UPLOAD_FOLDER'], fname)):
+            os.remove(os.path.join(current_app.config['UPLOAD_FOLDER'], fname))
 
     db = get_db()
 
     with current_app.open_resource('schema.sql') as schema:
         db.executescript(schema.read().decode('utf8'))
 
-    flist = os.listdir(current_app.config['KEY_FOLDER']);
+    flist = os.listdir(current_app.config['KEY_FOLDER'])
     for fname in flist:
         with open(os.path.join(current_app.config['KEY_FOLDER'], fname)) as f:
             content = f.read()
             tmp = sha256(content.encode('utf-8')).digest()
             value = b64encode(tmp).decode('ascii')
-            db.execute(
-                    'INSERT INTO users (keyfile, macaddr) VALUES (?, ?)', (value, None)
-                    )
+            if db.execute('SELECT id FROM users WHERE keyfile = value').fetchone() is None:
+                db.execute(
+                        'INSERT INTO users (keyfile, macaddr) VALUES (?, ?)', (value, None)
+                        )
     db.commit()
 
     # create a new log file
