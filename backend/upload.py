@@ -31,36 +31,35 @@ def upload():
         # If the MAC address is not NULL in database, compare it with the
         # uploaded infomation.
         if checkinfo is None:
-            abort(403)
+            result = { 'status': 'failed', 'message': 'invalid key file'}
         elif checkinfo['macaddr'] is None:
             db.execute(
                     'UPDATE users SET macaddr = ? WHERE id = ?',
                     (macaddr, checkinfo['id']))
             db.commit()
         elif macaddr != checkinfo['macaddr']:
-            abort(403)
+            result = { 'status': 'failed', 'message': 'MAC address does not match the owner of key\'s'}
         else:
-            pass
-        upload_file = request.files['upload-file']
-        filename = upload_file.filename
-        current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        print("filename is %s" % filename)
-        if filename != '':
-            filename = unquote(filename)
-            if db.execute('SELECT id FROM files WHERE filename = ?', (filename,)).fetchone() is None:
-                current_type = get_type(filename)
-                db.execute(
-                        'INSERT INTO files (uploaded, userid, filename, filetype) VALUES (?, ?, ?, ?)',
+            upload_file = request.files['upload-file']
+            filename = upload_file.filename
+            current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+            print("filename is %s" % filename)
+            if filename != '':
+                filename = unquote(filename)
+                if db.execute('SELECT id FROM files WHERE filename = ?', (filename,)).fetchone() is None:
+                    current_type = get_type(filename)
+                    db.execute(
+                            'INSERT INTO files (uploaded, userid, filename, filetype) VALUES (?, ?, ?, ?)',
                         (current_time, checkinfo['id'], filename, current_type))
+                else:
+                    db.execute(
+                            'UPDATE files SET uploaded = ? WHERE filename = ?',
+                            (current_time, filename))
+                db.commit()
+                upload_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                result = { 'status': 'success' }
             else:
-                db.execute(
-                        'UPDATE files SET uploaded = ? WHERE filename = ?',
-                        (current_time, filename))
-            db.commit()
-            upload_file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            result = { 'status': 'success' }
-        else:
-            result = { 'status': 'failed', 'message': 'empty filename'}
+                result = { 'status': 'failed', 'message': 'empty filename'}
         return jsonify(result)
     else:
         abort(403)
