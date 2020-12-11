@@ -45,7 +45,7 @@ def init_db():
             content = f.read()
             tmp = sha256(content.encode('utf-8')).digest()
             value = b64encode(tmp).decode('ascii')
-            if db.execute('SELECT id FROM users WHERE keyfile = value').fetchone() is None:
+            if db.execute('SELECT id FROM users WHERE keyfile = ?', (value,)).fetchone() is None:
                 db.execute(
                         'INSERT INTO users (keyfile, macaddr) VALUES (?, ?)', (value, None)
                         )
