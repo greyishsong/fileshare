@@ -32,14 +32,14 @@ def upload():
         # uploaded infomation.
         if checkinfo is None:
             result = { 'status': 'failed', 'message': 'invalid key file'}
-        elif checkinfo['macaddr'] is None:
-            db.execute(
-                    'UPDATE users SET macaddr = ? WHERE id = ?',
-                    (macaddr, checkinfo['id']))
-            db.commit()
         elif macaddr != checkinfo['macaddr']:
             result = { 'status': 'failed', 'message': 'MAC address does not match the owner of key\'s'}
         else:
+            if checkinfo['macaddr'] is None:
+                db.execute(
+                        'UPDATE users SET macaddr = ? WHERE id = ?',
+                        (macaddr, checkinfo['id']))
+                db.commit()
             upload_file = request.files['upload-file']
             filename = upload_file.filename
             current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
