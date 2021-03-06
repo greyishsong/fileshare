@@ -32,7 +32,7 @@ def upload():
         # uploaded infomation.
         if checkinfo is None:
             result = { 'status': 'failed', 'message': 'invalid key file'}
-        elif macaddr != checkinfo['macaddr']:
+        elif (checkinfo['macaddr'] is not None) and (macaddr != checkinfo['macaddr']):
             result = { 'status': 'failed', 'message': 'MAC address does not match the owner of key\'s'}
         else:
             if checkinfo['macaddr'] is None:
